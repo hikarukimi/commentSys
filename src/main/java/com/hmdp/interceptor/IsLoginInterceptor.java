@@ -25,6 +25,11 @@ import java.util.concurrent.TimeUnit;
 public class IsLoginInterceptor implements HandlerInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(IsLoginInterceptor.class);
+
+    static {
+        LoggerFactory.getLogger(IsLoginInterceptor.class);
+    }
+
     // 用于操作Redis的模板对象
     private final StringRedisTemplate stringRedisTemplate;
 
@@ -53,9 +58,10 @@ public class IsLoginInterceptor implements HandlerInterceptor {
         // 从Redis中获取用户信息
         User user = BeanUtil.toBean(stringRedisTemplate.opsForHash().
                 entries(RedisConstants.LOGIN_USER_KEY + token), User.class);
-        if (user == null){
+        if (user.getId() == null){
             // 用户未登录，设置响应状态码为401
             response.setStatus(401);
+            response.getWriter().write("{\"success\":false,\"msg\":\"未登录\"}");
             return false;
         }
         // 保存用户信息到ThreadLocal，以便在请求处理过程中使用
