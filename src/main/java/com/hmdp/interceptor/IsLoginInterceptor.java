@@ -80,10 +80,9 @@ public class IsLoginInterceptor implements HandlerInterceptor {
      * @param response 响应对象
      * @param handler  处理器对象
      * @param modelAndView 视图对象
-     * @throws Exception 可能抛出的异常
      */
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) {
         UserHolder.removeUser();
     }
 }
